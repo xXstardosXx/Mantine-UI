@@ -20,6 +20,7 @@ import { IconAlertCircle, IconChartBar, IconCheck, IconLock, IconMail, IconUser 
 import { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import type { LoginCredentials, RegisterCredentials } from '../../types';
+import classes from './LoginPage.module.css';
 
 export function LoginPage() {
   const { login, register } = useAuth();
@@ -145,6 +146,7 @@ export function LoginPage() {
               visibleFrom="md"
               radius="lg"
               padding="xl"
+              className={classes.heroCard}
               style={{
                 flex: 1,
                 background: 'linear-gradient(145deg, var(--mantine-color-indigo-6), var(--mantine-color-indigo-8))',

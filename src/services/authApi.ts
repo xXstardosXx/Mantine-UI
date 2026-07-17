@@ -1,6 +1,5 @@
 import type { AuthUser, LoginCredentials, RegisterCredentials, UserSettings } from '../types';
-
-const TOKEN_KEY = 'saasflow_token';
+import { apiRequest, ApiError, tokenStore } from './apiClient';
 
 interface AuthResponse {
   token: string;
@@ -13,92 +12,48 @@ interface MeResponse {
   settings: UserSettings;
 }
 
-class ApiError extends Error {
-  status: number;
-
-  constructor(message: string, status: number) {
-    super(message);
-    this.status = status;
-  }
-}
-
-async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
-  const token = localStorage.getItem(TOKEN_KEY);
-  const headers = new Headers(options.headers);
-
-  if (!headers.has('Content-Type') && options.body) {
-    headers.set('Content-Type', 'application/json');
-  }
-
-  if (token) {
-    headers.set('Authorization', `Bearer ${token}`);
-  }
-
-  const response = await fetch(`/api/auth${path}`, {
-    ...options,
-    headers,
-  });
-
-  const data = (await response.json()) as T & { error?: string };
-
-  if (!response.ok) {
-    throw new ApiError(data.error ?? 'Error en la solicitud', response.status);
-  }
-
-  return data;
-}
-
 export const authApi = {
-  getToken(): string | null {
-    return localStorage.getItem(TOKEN_KEY);
-  },
-
-  setToken(token: string | null) {
-    if (token) {
-      localStorage.setItem(TOKEN_KEY, token);
-    } else {
-      localStorage.removeItem(TOKEN_KEY);
-    }
-  },
+  getToken: tokenStore.get,
+  setToken: tokenStore.set,
 
   async login(credentials: LoginCredentials): Promise<AuthResponse> {
-    const data = await request<AuthResponse>('/login', {
+    const data = await apiRequest<AuthResponse>('/auth/login', {
       method: 'POST',
       body: JSON.stringify(credentials),
     });
-    this.setToken(data.token);
+    tokenStore.set(data.token);
     return data;
   },
 
   async register(credentials: RegisterCredentials): Promise<AuthResponse> {
-    const data = await request<AuthResponse>('/register', {
+    const data = await apiRequest<AuthResponse>('/auth/register', {
       method: 'POST',
       body: JSON.stringify(credentials),
     });
-    this.setToken(data.token);
+    tokenStore.set(data.token);
     return data;
   },
 
   async me(): Promise<MeResponse> {
-    return request<MeResponse>('/me');
+    return apiRequest<MeResponse>('/auth/me');
   },
 
   async updateProfile(data: Partial<Pick<AuthUser, 'name' | 'phone' | 'bio' | 'department'>>): Promise<MeResponse> {
-    return request<MeResponse>('/profile', {
+    return apiRequest<MeResponse>('/auth/profile', {
       method: 'PUT',
       body: JSON.stringify(data),
     });
   },
 
   async updateSettings(data: Partial<UserSettings>): Promise<MeResponse> {
-    return request<MeResponse>('/settings', {
+    return apiRequest<MeResponse>('/auth/settings', {
       method: 'PUT',
       body: JSON.stringify(data),
     });
   },
 
   logout() {
-    this.setToken(null);
+    tokenStore.set(null);
   },
 };
 

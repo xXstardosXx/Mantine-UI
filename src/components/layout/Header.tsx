@@ -35,6 +35,7 @@ const VIEW_LABELS: Record<ViewId, string> = {
   kanban: 'Tablero Kanban',
   profile: 'Mi Perfil',
   settings: 'Configuración',
+  users: 'Gestión de Usuarios',
 };
 
 export function Header({

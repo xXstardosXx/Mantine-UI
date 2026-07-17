@@ -8,6 +8,7 @@ import {
   IconUsers,
 } from '@tabler/icons-react';
 import type { AnalyticsMetric } from '../../types';
+import classes from './StatsCards.module.css';
 
 const ICON_MAP = {
   revenue: IconCash,
@@ -28,7 +29,7 @@ export function StatsCards({ metrics }: StatsCardsProps) {
         const isPositive = metric.change >= 0;
 
         return (
-          <Card key={metric.id} shadow="md" radius="lg" padding="lg" withBorder>
+          <Card key={metric.id} shadow="md" radius="lg" padding="lg" withBorder className={classes.card}>
             <Group justify="space-between" align="flex-start" mb="sm">
               <ThemeIcon size="lg" radius="md" variant="light" color="indigo" aria-hidden="true">
                 <Icon size={20} stroke={1.5} />

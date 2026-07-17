@@ -14,7 +14,7 @@ function signToken(userId: string) {
 
 async function getUserWithSettings(userId: string) {
   const users = await sql`
-    SELECT id, email, name, role, avatar, status, phone, bio, department, joined_at
+    SELECT id, email, name, role, avatar, status, phone, bio, department, is_admin, joined_at
     FROM users WHERE id = ${userId} LIMIT 1
   `;
 
@@ -112,7 +112,7 @@ router.post('/login', async (req, res) => {
 
     const normalizedEmail = email.trim().toLowerCase();
     const users = await sql`
-      SELECT id, email, password_hash, name, role, avatar, status, phone, bio, department, joined_at
+      SELECT id, email, password_hash, name, role, avatar, status, phone, bio, department, is_admin, joined_at
       FROM users WHERE email = ${normalizedEmail} LIMIT 1
     `;
 

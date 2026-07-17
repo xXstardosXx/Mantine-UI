@@ -1,10 +1,12 @@
 import { NavLink, Stack, Text, ThemeIcon } from '@mantine/core';
-import { IconChartBar, IconLayoutKanban } from '@tabler/icons-react';
+import { IconChartBar, IconLayoutKanban, IconShieldCheck } from '@tabler/icons-react';
 import type { ViewId } from '../../types';
+import classes from './Sidebar.module.css';
 
 interface SidebarProps {
   activeView: ViewId;
   onNavigate: (view: ViewId) => void;
+  isAdmin: boolean;
 }
 
 const NAV_ITEMS: { id: ViewId; label: string; description: string; icon: typeof IconChartBar }[] = [
@@ -22,14 +24,23 @@ const NAV_ITEMS: { id: ViewId; label: string; description: string; icon: typeof 
   },
 ];
 
-export function Sidebar({ activeView, onNavigate }: SidebarProps) {
+const ADMIN_NAV_ITEM = {
+  id: 'users' as const,
+  label: 'Gestión de Usuarios',
+  description: 'Solo superusuarios',
+  icon: IconShieldCheck,
+};
+
+export function Sidebar({ activeView, onNavigate, isAdmin }: SidebarProps) {
+  const items = isAdmin ? [...NAV_ITEMS, ADMIN_NAV_ITEM] : NAV_ITEMS;
+
   return (
     <Stack gap="xs" p="md" component="nav" aria-label="Navegación principal">
       <Text size="xs" tt="uppercase" fw={700} c="dimmed" mb="xs" px="sm">
         Módulos
       </Text>
 
-      {NAV_ITEMS.map((item) => {
+      {items.map((item) => {
         const Icon = item.icon;
         const isActive = activeView === item.id;
 
@@ -46,6 +57,7 @@ export function Sidebar({ activeView, onNavigate }: SidebarProps) {
             active={isActive}
             onClick={() => onNavigate(item.id)}
             variant="filled"
+            className={classes.link}
             aria-current={isActive ? 'page' : undefined}
           />
         );

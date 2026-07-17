@@ -1,4 +1,4 @@
-export type ViewId = 'analytics' | 'kanban' | 'profile' | 'settings';
+export type ViewId = 'analytics' | 'kanban' | 'profile' | 'settings' | 'users';
 
 export type ColorScheme = 'light' | 'dark';
 
@@ -26,6 +26,7 @@ export interface AuthUser extends User {
   phone: string;
   bio: string;
   department: string;
+  isAdmin: boolean;
 }
 
 export interface UserSettings {
@@ -91,6 +92,13 @@ export interface AnalyticsMetric {
   value: string;
   change: number;
   icon: 'revenue' | 'users' | 'tasks' | 'projects';
+}
+
+export interface AnalyticsSummary {
+  newClients: number;
+  taskCompletionRate: number;
+  pendingTasks: number;
+  activeBudget: number;
 }
 
 export type SortDirection = 'asc' | 'desc';

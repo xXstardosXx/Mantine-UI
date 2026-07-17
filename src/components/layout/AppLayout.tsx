@@ -57,7 +57,7 @@ export function AppLayout({
 
       <AppShell.Navbar p={0}>
         <AppShell.Section grow>
-          <Sidebar activeView={activeView} onNavigate={handleNavigate} />
+          <Sidebar activeView={activeView} onNavigate={handleNavigate} isAdmin={user.isAdmin} />
         </AppShell.Section>
         <AppShell.Section p="md" style={{ borderTop: '1px solid var(--mantine-color-gray-2)' }}>
           <Text size="xs" c="dimmed" ta="center">

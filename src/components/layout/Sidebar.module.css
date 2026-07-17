@@ -1,0 +1,12 @@
+.link {
+  transition: transform 150ms ease, background-color 150ms ease;
+
+  &:hover {
+    transform: translateX(3px);
+  }
+
+  &[data-active] {
+    background: linear-gradient(135deg, var(--mantine-color-indigo-6), var(--mantine-color-indigo-8));
+    box-shadow: var(--mantine-shadow-sm);
+  }
+}

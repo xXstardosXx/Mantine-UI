@@ -24,7 +24,7 @@ interface TaskModalProps {
   onClose: () => void;
   users: User[];
   projects: Project[];
-  onSubmit: (task: Omit<Task, 'id' | 'createdAt'>) => void;
+  onSubmit: (task: Omit<Task, 'id' | 'createdAt'>) => Promise<void>;
 }
 
 export function TaskModal({ opened, onClose, users, projects, onSubmit }: TaskModalProps) {
@@ -68,10 +68,8 @@ export function TaskModal({ opened, onClose, users, projects, onSubmit }: TaskMo
   const handleSubmit = form.onSubmit(async (values) => {
     setSubmitting(true);
 
-    await new Promise((resolve) => window.setTimeout(resolve, 600));
-
     try {
-      onSubmit({
+      await onSubmit({
         title: values.title.trim(),
         description: values.description.trim(),
         assigneeId: values.assigneeId,

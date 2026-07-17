@@ -10,6 +10,7 @@ export interface AuthUserDto {
   phone: string;
   bio: string;
   department: string;
+  isAdmin: boolean;
   joinedAt: string;
 }
 
@@ -41,6 +42,7 @@ export function mapUser(row: UserRow): AuthUserDto {
     phone: row.phone,
     bio: row.bio,
     department: row.department,
+    isAdmin: row.is_admin,
     joinedAt: new Date(row.joined_at).toISOString().split('T')[0],
   };
 }

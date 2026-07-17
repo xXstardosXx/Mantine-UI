@@ -1,0 +1,29 @@
+.heroCard {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+    z-index: -1;
+  }
+
+  &::before {
+    width: rem(260px);
+    height: rem(260px);
+    top: rem(-80px);
+    right: rem(-60px);
+  }
+
+  &::after {
+    width: rem(180px);
+    height: rem(180px);
+    bottom: rem(-60px);
+    left: rem(-40px);
+    background: rgba(255, 255, 255, 0.06);
+  }
+}

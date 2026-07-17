@@ -2,6 +2,8 @@ import { createTheme, rem } from '@mantine/core';
 
 export const theme = createTheme({
   primaryColor: 'indigo',
+  autoContrast: true,
+  defaultGradient: { from: 'indigo.6', to: 'indigo.8', deg: 135 },
   fontFamily: 'Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif',
   headings: {
     fontFamily: 'Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif',
@@ -53,8 +55,24 @@ export const theme = createTheme({
         radius: 'md',
         withBorder: true,
       },
+      styles: {
+        root: {
+          transition: 'transform 150ms ease, box-shadow 150ms ease',
+        },
+      },
     },
     Button: {
+      defaultProps: {
+        radius: 'md',
+        variant: 'gradient',
+      },
+    },
+    ThemeIcon: {
+      defaultProps: {
+        variant: 'light',
+      },
+    },
+    NavLink: {
       defaultProps: {
         radius: 'md',
       },

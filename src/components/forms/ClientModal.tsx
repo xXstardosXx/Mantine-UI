@@ -18,7 +18,7 @@ interface ClientFormValues {
 interface ClientModalProps {
   opened: boolean;
   onClose: () => void;
-  onSubmit: (client: Omit<Client, 'id'>) => void;
+  onSubmit: (client: Omit<Client, 'id'>) => Promise<void>;
 }
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -64,10 +64,8 @@ export function ClientModal({ opened, onClose, onSubmit }: ClientModalProps) {
   const handleSubmit = form.onSubmit(async (values) => {
     setSubmitting(true);
 
-    await new Promise((resolve) => window.setTimeout(resolve, 600));
-
     try {
-      onSubmit({
+      await onSubmit({
         name: values.name.trim(),
         email: values.email.trim(),
         company: values.company.trim(),

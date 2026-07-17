@@ -1,19 +1,24 @@
 import { Button, Card, Container, Grid, Group, Text, Title } from '@mantine/core';
 import { IconUserPlus } from '@tabler/icons-react';
-import type { AnalyticsMetric, Project } from '../../types';
+import type { AnalyticsMetric, AnalyticsSummary, Project } from '../../types';
 import { AnalyticsTable } from './AnalyticsTable';
 import { StatsCards } from './StatsCards';
 
 interface AnalyticsDashboardProps {
   metrics: AnalyticsMetric[];
   projects: Project[];
+  summary: AnalyticsSummary | null;
   loading: boolean;
   onAddClient: () => void;
 }
 
+const formatCurrency = (amount: number) =>
+  new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(amount);
+
 export function AnalyticsDashboard({
   metrics,
   projects,
+  summary,
   loading,
   onAddClient,
 }: AnalyticsDashboardProps) {
@@ -59,40 +64,40 @@ export function AnalyticsDashboard({
               <Grid.Col span={6}>
                 <Card padding="sm" radius="md" bg="indigo.0" withBorder={false}>
                   <Text size="xs" c="dimmed" tt="uppercase" fw={600}>
-                    Nuevos clientes
+                    Nuevos clientes (30d)
                   </Text>
                   <Text size="lg" fw={700} c="indigo">
-                    +12
+                    +{summary?.newClients ?? 0}
                   </Text>
                 </Card>
               </Grid.Col>
               <Grid.Col span={6}>
                 <Card padding="sm" radius="md" bg="teal.0" withBorder={false}>
                   <Text size="xs" c="dimmed" tt="uppercase" fw={600}>
-                    Tasa retención
+                    Tasa de finalización
                   </Text>
                   <Text size="lg" fw={700} c="teal">
-                    94.2%
+                    {summary?.taskCompletionRate ?? 0}%
                   </Text>
                 </Card>
               </Grid.Col>
               <Grid.Col span={6}>
                 <Card padding="sm" radius="md" bg="orange.0" withBorder={false}>
                   <Text size="xs" c="dimmed" tt="uppercase" fw={600}>
-                    Tickets abiertos
+                    Tareas pendientes
                   </Text>
                   <Text size="lg" fw={700} c="orange">
-                    23
+                    {summary?.pendingTasks ?? 0}
                   </Text>
                 </Card>
               </Grid.Col>
               <Grid.Col span={6}>
                 <Card padding="sm" radius="md" bg="grape.0" withBorder={false}>
                   <Text size="xs" c="dimmed" tt="uppercase" fw={600}>
-                    NPS Score
+                    Presupuesto activo
                   </Text>
                   <Text size="lg" fw={700} c="grape">
-                    72
+                    {formatCurrency(summary?.activeBudget ?? 0)}
                   </Text>
                 </Card>
               </Grid.Col>
